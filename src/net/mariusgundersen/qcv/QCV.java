@@ -1,31 +1,44 @@
 package net.mariusgundersen.qcv;
 
 import net.mariusgundersen.qcv.handlers.CommandHandler;
-import net.mariusgundersen.qcv.loader.DefaultCommandHandlerInstancer;
-import net.mariusgundersen.qcv.loader.Endpoint;
-import net.mariusgundersen.qcv.loader.Instancer;
-import net.mariusgundersen.qcv.loader.Loader;
-import net.mariusgundersen.qcv.loader.WebEndpoint;
+import net.mariusgundersen.qcv.handlers.QueryHandler;
+import net.mariusgundersen.qcv.loader.HandlerFactory;
+import net.mariusgundersen.qcv.loader.TypeRepository;
 
 public class QCV {
 
-	private Loader loader;
-	private WebEndpoint webEndpoint;
+	private TypeRepository loader;
+	private JsonEndpoint jsonEndpoint;
 	private Endpoint endpoint;
-	private Instancer<CommandHandler> instancer = new DefaultCommandHandlerInstancer();
 	
 	
 	public QCV(){
-		loader = new Loader();
-		endpoint = new Endpoint(loader, instancer );
-		webEndpoint = new WebEndpoint(endpoint, loader);
+		loader = new TypeRepository();
+		endpoint = new Endpoint(loader);
+		jsonEndpoint = new JsonEndpoint(endpoint, loader);
 	}
 	
-	
-	public Loader getLoader() {
-		return loader;
+	public JsonEndpoint getJsonEndpoint() {
+		return jsonEndpoint;
 	}
-	public WebEndpoint getWebEndpoint() {
-		return webEndpoint;
+
+	public QCV addPackage(String ...packagesName){
+		for(String packageName: packagesName){
+			loader.addPackage(packageName);
+		}
+		return this;
+	}
+		
+	public void loadCommandsAndQueries(){
+		loader.loadCommandsAndQueries();
+	}
+	
+	@SuppressWarnings("rawtypes")
+	public void setCommandHandleCreater(HandlerFactory<CommandHandler> creater){
+		endpoint.SetCommandHandlerCreater(creater);
+	}
+	@SuppressWarnings("rawtypes")
+	public void setQueryHandleCreater(HandlerFactory<QueryHandler> creater){
+		endpoint.SetQueryHandlerCreater(creater);
 	}
 }

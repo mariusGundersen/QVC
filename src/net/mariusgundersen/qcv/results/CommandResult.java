@@ -16,6 +16,6 @@ public class CommandResult {
 	public CommandResult(){
 		this.success = true;
 		this.exception = null;
-		this.valid = false;
+		this.valid = true;
 	}
 }
