@@ -1,9 +1,8 @@
-package net.mariusgundersen.qcv.loader;
+package net.mariusgundersen.qcv.handlers.factory;
 
 import net.mariusgundersen.qcv.handlers.QueryHandler;
 
 
-@SuppressWarnings("rawtypes")
 public class DefaultQueryHandleFactory implements HandlerFactory<QueryHandler> {
 
 	@Override

@@ -1,4 +1,4 @@
-package net.mariusgundersen.qcv.loader;
+package net.mariusgundersen.qcv.handlers.factory;
 
 import net.mariusgundersen.qcv.handlers.Handler;
 

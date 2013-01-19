@@ -1,9 +1,8 @@
-package net.mariusgundersen.qcv.loader;
+package net.mariusgundersen.qcv.handlers.factory;
 
 import net.mariusgundersen.qcv.handlers.CommandHandler;
 
 
-@SuppressWarnings("rawtypes")
 public class DefaultCommandHandlerFactory implements HandlerFactory<CommandHandler> {
 
 	@Override

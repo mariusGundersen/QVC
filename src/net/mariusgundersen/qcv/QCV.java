@@ -2,7 +2,7 @@ package net.mariusgundersen.qcv;
 
 import net.mariusgundersen.qcv.handlers.CommandHandler;
 import net.mariusgundersen.qcv.handlers.QueryHandler;
-import net.mariusgundersen.qcv.loader.HandlerFactory;
+import net.mariusgundersen.qcv.handlers.factory.HandlerFactory;
 import net.mariusgundersen.qcv.loader.TypeRepository;
 
 public class QCV {
@@ -33,11 +33,10 @@ public class QCV {
 		loader.loadCommandsAndQueries();
 	}
 	
-	@SuppressWarnings("rawtypes")
 	public void setCommandHandleCreater(HandlerFactory<CommandHandler> creater){
 		endpoint.SetCommandHandlerCreater(creater);
 	}
-	@SuppressWarnings("rawtypes")
+	
 	public void setQueryHandleCreater(HandlerFactory<QueryHandler> creater){
 		endpoint.SetQueryHandlerCreater(creater);
 	}
