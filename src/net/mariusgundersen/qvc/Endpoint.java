@@ -8,18 +8,21 @@ import net.mariusgundersen.qvc.handlers.factory.HandlerFactory;
 import net.mariusgundersen.qvc.repository.TypeRepository;
 import net.mariusgundersen.qvc.results.*;
 import net.mariusgundersen.qvc.validation.ValidationResult;
-import net.mariusgundersen.qvc.validation.Validator;
+import net.mariusgundersen.qvc.validation.ExecutableValidator;
+import net.mariusgundersen.qvc.validation.metadata.ValidationConstraints;
 
 public class Endpoint {
 	
 	private TypeRepository loader;
 	private HandlerFactory<CommandHandler> commandHandleCreater;
 	private HandlerFactory<QueryHandler> queryHandleCreater;
+	private ExecutableValidator validator;
 
 	public Endpoint(TypeRepository loader) {
 		this.loader = loader;
 		this.commandHandleCreater = new DefaultCommandHandlerFactory();
 		this.queryHandleCreater = new DefaultQueryHandleFactory();
+		this.validator = new ExecutableValidator();
 	}
 
 	public void SetCommandHandlerCreater(HandlerFactory<CommandHandler> creater){
@@ -28,6 +31,10 @@ public class Endpoint {
 	
 	public void SetQueryHandlerCreater(HandlerFactory<QueryHandler> creater){
 		this.queryHandleCreater = creater;
+	}
+	
+	public ValidationConstraints constraints(Class<? extends Executable> executable){
+		return validator.validationConstraints(executable);
 	}
 
 	public CommandResult command(Command command) {
@@ -57,7 +64,7 @@ public class Endpoint {
 	}
 	
 	private ValidationResult validate(Executable executable){
-		return Validator.validate(executable);
+		return validator.validate(executable);
 	}
 	
 	private CommandResult handle(Command command) throws Exception{

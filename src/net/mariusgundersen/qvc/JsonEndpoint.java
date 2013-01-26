@@ -7,6 +7,8 @@ import net.mariusgundersen.qvc.exceptions.*;
 import net.mariusgundersen.qvc.executables.*;
 import net.mariusgundersen.qvc.repository.TypeRepository;
 import net.mariusgundersen.qvc.results.*;
+import net.mariusgundersen.qvc.validation.GroupSerializer;
+import net.mariusgundersen.qvc.validation.metadata.ValidationConstraints;
 
 public class JsonEndpoint {
 
@@ -22,6 +24,7 @@ public class JsonEndpoint {
 
 		jsonBuilder = new GsonBuilder();
 		jsonBuilder.registerTypeAdapter(Throwable.class, new ExceptionSerializer());
+		jsonBuilder.registerTypeAdapter(Class.class, new GroupSerializer());
 		gson = jsonBuilder.create();
 	}
 
@@ -31,6 +34,10 @@ public class JsonEndpoint {
 
 	public String query(String name, String json) {
 		return jsonStringify(queryResultFromJson(name, json));
+	}
+	
+	public String constraints(String name){
+		return jsonStringify(constraintsFromJson(name));
 	}
 
 	private CommandResult commandResultFromJson(String name, String json) {
@@ -50,6 +57,15 @@ public class JsonEndpoint {
 			return new QueryResult(exception);
 		}
 	}
+	
+	private ValidationConstraints constraintsFromJson(String name){
+		try{
+			Class<? extends Executable> executable = executableFromName(name);
+			return endpoint.constraints(executable);
+		} catch (Exception exception){
+			return new ValidationConstraints(exception);
+		}
+	}
 
 	private Command commandFromJson(String name, String json) throws CommandDoesNotExistException {
 		Class<? extends Command> command = loader.findCommand(name);
@@ -59,6 +75,19 @@ public class JsonEndpoint {
 	private Query queryFromJson(String name, String json) throws QueryDoesNotExistException {
 		Class<? extends Query> query = loader.findQuery(name);
 		return gson.fromJson(json, query);
+	}
+	
+	private Class<? extends Executable> executableFromName(String name) throws ExecutableDoesNotExistException{
+		try {
+			return loader.findCommand(name);
+		} catch (CommandDoesNotExistException e) {
+			try {
+				return loader.findQuery(name);
+			} catch (QueryDoesNotExistException e1) {
+				throw new ExecutableDoesNotExistException(name);
+			}
+		}
+		
 	}
 
 	private String jsonStringify(Object data) {
