@@ -11,7 +11,7 @@ public class SingletonCommandHandlerFactory implements HandlerFactory<CommandHan
 	private final Map<Class<? extends CommandHandler>, CommandHandler> handlerMap = new HashMap<Class<? extends CommandHandler>, CommandHandler>();
 	
 	@Override
-	public CommandHandler create(Class<? extends CommandHandler> classType) throws Exception {
+	public CommandHandler create(Class<? extends CommandHandler> classType, String sessionId) throws Exception {
 		if(handlerMap.containsKey(classType)){
 			return handlerMap.get(classType);
 		}else{

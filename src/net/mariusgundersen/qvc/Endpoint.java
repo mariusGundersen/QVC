@@ -3,7 +3,7 @@ package net.mariusgundersen.qvc;
 import net.mariusgundersen.qvc.executables.*;
 import net.mariusgundersen.qvc.handlers.*;
 import net.mariusgundersen.qvc.handlers.factory.DefaultCommandHandlerFactory;
-import net.mariusgundersen.qvc.handlers.factory.DefaultQueryHandleFactory;
+import net.mariusgundersen.qvc.handlers.factory.DefaultQueryHandlerFactory;
 import net.mariusgundersen.qvc.handlers.factory.HandlerFactory;
 import net.mariusgundersen.qvc.repository.TypeRepository;
 import net.mariusgundersen.qvc.results.*;
@@ -14,23 +14,23 @@ import net.mariusgundersen.qvc.validation.metadata.ValidationConstraints;
 public class Endpoint {
 	
 	private TypeRepository loader;
-	private HandlerFactory<CommandHandler> commandHandleCreater;
-	private HandlerFactory<QueryHandler> queryHandleCreater;
+	private HandlerFactory<CommandHandler> commandHandlerFactory;
+	private HandlerFactory<QueryHandler> queryHandlerFactory;
 	private ExecutableValidator validator;
 
 	public Endpoint(TypeRepository loader) {
 		this.loader = loader;
-		this.commandHandleCreater = new DefaultCommandHandlerFactory();
-		this.queryHandleCreater = new DefaultQueryHandleFactory();
+		this.commandHandlerFactory = new DefaultCommandHandlerFactory();
+		this.queryHandlerFactory = new DefaultQueryHandlerFactory();
 		this.validator = new ExecutableValidator();
 	}
 
 	public void SetCommandHandlerCreater(HandlerFactory<CommandHandler> creater){
-		this.commandHandleCreater = creater;
+		this.commandHandlerFactory = creater;
 	}
 	
 	public void SetQueryHandlerCreater(HandlerFactory<QueryHandler> creater){
-		this.queryHandleCreater = creater;
+		this.queryHandlerFactory = creater;
 	}
 	
 	public ValidationConstraints constraints(Class<? extends Executable> executable){
@@ -68,24 +68,30 @@ public class Endpoint {
 	}
 	
 	private CommandResult handle(Command command) throws Exception{
-		CommandHandler handler = commandHandlerFromCommand(command.getClass());
+		return handle(command, "");
+	}	
+	private CommandResult handle(Command command, String sessionId) throws Exception{
+		CommandHandler handler = commandHandlerFromCommand(command.getClass(), sessionId);
 		handler.getClass().getMethod("handle", command.getClass()).invoke(handler, command);
 		return new CommandResult();
 	}
-	
+
 	private QueryResult handle(Query query) throws Exception{
-		QueryHandler handler = queryHandlerFromQuery(query.getClass());
+		return handle(query, "");
+	}
+	private QueryResult handle(Query query, String sessionId) throws Exception{
+		QueryHandler handler = queryHandlerFromQuery(query.getClass(), sessionId);
 		Object result = handler.getClass().getMethod("handle", query.getClass()).invoke(handler, query);
 		return new QueryResult(result);		
 	}
 
-	private CommandHandler commandHandlerFromCommand(Class<? extends Command> commandClass) throws Exception {
+	private CommandHandler commandHandlerFromCommand(Class<? extends Command> commandClass, String sessionId) throws Exception {
 		Class<? extends CommandHandler> commandHandler = loader.findCommandHandler(commandClass);
-		return commandHandleCreater.create(commandHandler);
+		return commandHandlerFactory.create(commandHandler, sessionId);
 	}
 
-	private QueryHandler queryHandlerFromQuery(Class<? extends Query> queryClass) throws Exception {
+	private QueryHandler queryHandlerFromQuery(Class<? extends Query> queryClass, String sessionId) throws Exception {
 		Class<? extends QueryHandler> queryHandler = loader.findQueryHandler(queryClass);
-		return queryHandleCreater.create(queryHandler);
+		return queryHandlerFactory.create(queryHandler, sessionId);
 	}
 }

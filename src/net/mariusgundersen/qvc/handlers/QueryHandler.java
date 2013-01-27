@@ -4,5 +4,5 @@ import net.mariusgundersen.qvc.executables.Query;
 
 
 public interface QueryHandler extends Handler {
-	//public Object handle(Query query);
+	public Object handle(Query query);
 }

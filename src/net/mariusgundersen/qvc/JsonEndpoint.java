@@ -29,10 +29,18 @@ public class JsonEndpoint {
 	}
 
 	public String command(String name, String json) {
+		return command(name, json, "");
+	}
+
+	public String command(String name, String json, String sessionId) {
 		return jsonStringify(commandResultFromJson(name, json));
 	}
 
 	public String query(String name, String json) {
+		return query(name, json, "");
+	}
+
+	public String query(String name, String json, String sessionId) {
 		return jsonStringify(queryResultFromJson(name, json));
 	}
 	
