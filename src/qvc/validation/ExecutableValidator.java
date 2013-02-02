@@ -8,9 +8,9 @@ import javax.validation.*;
 import javax.validation.metadata.*;
 
 import qvc.executables.Executable;
-import qvc.validation.metadata.ParameterConstraint;
+import qvc.validation.metadata.Parameter;
 import qvc.validation.metadata.ValidationConstraints;
-import qvc.validation.metadata.ValidationRule;
+import qvc.validation.metadata.ParameterContsraint;
 
 public class ExecutableValidator {
 	
@@ -34,14 +34,14 @@ public class ExecutableValidator {
 		
 		for(PropertyDescriptor propertyDescriptor: propertyDescriptors){
 			String name = propertyDescriptor.getPropertyName();
-			ParameterConstraint constraint = new ParameterConstraint(name);
+			Parameter constraint = new Parameter(name);
 			
 			
 			for(ConstraintDescriptor<?> constraintDescriptor : propertyDescriptor.getConstraintDescriptors()){
 				String ruleName = constraintDescriptor.getAnnotation().annotationType().getSimpleName();
 				Map<String, Object> attributes = constraintDescriptor.getAttributes();
 				
-				ValidationRule rule = new ValidationRule(ruleName, attributes);
+				ParameterContsraint rule = new ParameterContsraint(ruleName, attributes);
 				
 				constraint.addRule(rule);
 				

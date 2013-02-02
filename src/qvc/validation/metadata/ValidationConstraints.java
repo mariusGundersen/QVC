@@ -6,21 +6,21 @@ import java.util.Set;
 
 public class ValidationConstraints {
 
-	public final Set<ParameterConstraint> constraints;
+	public final Set<Parameter> parameters;
 	public final Exception exception;
 	
 	public ValidationConstraints(){
-		this.constraints = new HashSet<ParameterConstraint>();
+		this.parameters = new HashSet<Parameter>();
 		this.exception = null;
 	}
 
 	public ValidationConstraints(Exception exception) {
 		this.exception = exception;
-		this.constraints = null;
+		this.parameters = null;
 	}
 
-	public void addConstraint(ParameterConstraint constraint) {
-		this.constraints.add(constraint);
+	public void addConstraint(Parameter constraint) {
+		this.parameters.add(constraint);
 	}
 
 	
