@@ -37,11 +37,11 @@ public class Endpoint {
 		return validator.validationConstraints(executable);
 	}
 
-	public CommandResult command(Command command) {
+	public CommandResult command(Command command, String sessionId) {
 		try {
 			ValidationResult validationResult = validate(command);
 			if(validationResult.isValid){
-				return handle(command);
+				return handle(command, sessionId);
 			}else{
 				return new CommandResult(validationResult);
 			}
@@ -50,11 +50,11 @@ public class Endpoint {
 		}
 	}
 
-	public QueryResult query(Query query) {
+	public QueryResult query(Query query, String sessionId) {
 		try {
 			ValidationResult validationResult = validate(query);
 			if(validationResult.isValid){
-				return handle(query);
+				return handle(query, sessionId);
 			}else{
 				return new QueryResult(validationResult);
 			}
@@ -67,18 +67,12 @@ public class Endpoint {
 		return validator.validate(executable);
 	}
 	
-	private CommandResult handle(Command command) throws Exception{
-		return handle(command, "");
-	}	
 	private CommandResult handle(Command command, String sessionId) throws Exception{
 		CommandHandler handler = commandHandlerFromCommand(command.getClass(), sessionId);
 		handler.getClass().getMethod("handle", command.getClass()).invoke(handler, command);
 		return new CommandResult();
 	}
 
-	private QueryResult handle(Query query) throws Exception{
-		return handle(query, "");
-	}
 	private QueryResult handle(Query query, String sessionId) throws Exception{
 		QueryHandler handler = queryHandlerFromQuery(query.getClass(), sessionId);
 		Object result = handler.getClass().getMethod("handle", query.getClass()).invoke(handler, query);

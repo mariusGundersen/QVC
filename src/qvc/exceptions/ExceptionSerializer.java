@@ -9,7 +9,8 @@ public class ExceptionSerializer implements JsonSerializer<Throwable> {
 	public JsonElement serialize(Throwable src, Type typeOfSrc,	JsonSerializationContext context) {
 		JsonObject jsonObject = new JsonObject();
 		jsonObject.add("cause",  new JsonPrimitive(String.valueOf(src.getCause())));
-		jsonObject.add("message", new JsonPrimitive(src.getMessage()));
+		if(src.getMessage() != null)
+			jsonObject.add("message", new JsonPrimitive(src.getMessage()));
 		jsonObject.add("stackTrace", stackTrace(src));
 		return jsonObject;
 	}

@@ -34,7 +34,7 @@ public class JsonEndpoint {
 	}
 
 	public String command(String name, String json, String sessionId) {
-		return jsonStringify(commandResultFromJson(name, json));
+		return jsonStringify(commandResultFromJson(name, json, sessionId));
 	}
 
 	public String query(String name, String json) {
@@ -42,26 +42,26 @@ public class JsonEndpoint {
 	}
 
 	public String query(String name, String json, String sessionId) {
-		return jsonStringify(queryResultFromJson(name, json));
+		return jsonStringify(queryResultFromJson(name, json, sessionId));
 	}
 	
 	public String constraints(String name){
 		return jsonStringify(constraintsFromJson(name));
 	}
 
-	private CommandResult commandResultFromJson(String name, String json) {
+	private CommandResult commandResultFromJson(String name, String json, String sessionId) {
 		try {
 			Command command = commandFromJson(name, json);
-			return endpoint.command(command);
+			return endpoint.command(command, sessionId);
 		} catch (Exception exception) {
 			return new CommandResult(exception);
 		}
 	}
 
-	private QueryResult queryResultFromJson(String name, String json) {
+	private QueryResult queryResultFromJson(String name, String json, String sessionId) {
 		try {
 			Query query = queryFromJson(name, json);
-			return endpoint.query(query);
+			return endpoint.query(query, sessionId);
 		} catch (Exception exception) {
 			return new QueryResult(exception);
 		}
