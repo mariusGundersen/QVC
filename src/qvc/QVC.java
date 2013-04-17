@@ -34,11 +34,11 @@ public class QVC {
 		loader.loadCommandsAndQueries();
 	}
 	
-	public void setCommandHandleCreater(HandlerFactory<CommandHandler> creater){
+	public void setCommandHandleFactory(HandlerFactory<CommandHandler> creater){
 		endpoint.SetCommandHandlerCreater(creater);
 	}
 	
-	public void setQueryHandleCreater(HandlerFactory<QueryHandler> creater){
+	public void setQueryHandleFactory(HandlerFactory<QueryHandler> creater){
 		endpoint.SetQueryHandlerCreater(creater);
 	}
 }

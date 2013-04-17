@@ -5,10 +5,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import qvc.executables.Executable;
-import qvc.handlers.Handler;
+import qvc.handlers.ExecutableHandler;
 
 
-public class HandlerMap<E extends Executable, H extends Handler> {	
+public class HandlerMap<E extends Executable, H extends ExecutableHandler> {	
 
 	private static final String HANDLE = "handle";
 	private Map<Class<? extends E>, Class<? extends H>> foundClasses = new HashMap<Class<? extends E>, Class<? extends H>>();

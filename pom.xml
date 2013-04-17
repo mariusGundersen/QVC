@@ -2,11 +2,11 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>MariusGundersen</groupId>
   <artifactId>QVC</artifactId>
-  <version>0.2.1</version>
+  <version>0.2.2</version>
   <build>
     <sourceDirectory>src</sourceDirectory>
     <plugins>
-        <plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-eclipse-plugin</artifactId>
         <configuration>
