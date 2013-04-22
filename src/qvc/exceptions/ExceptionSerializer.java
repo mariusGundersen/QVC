@@ -12,6 +12,7 @@ public class ExceptionSerializer implements JsonSerializer<Throwable> {
 		if(src.getMessage() != null)
 			jsonObject.add("message", new JsonPrimitive(src.getMessage()));
 		jsonObject.add("stackTrace", stackTrace(src));
+		jsonObject.add("exception", new JsonPrimitive(src.getClass().getName()));
 		return jsonObject;
 	}
 	

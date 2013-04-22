@@ -1,5 +1,7 @@
 package qvc;
 
+import java.lang.reflect.InvocationTargetException;
+
 import qvc.executables.*;
 import qvc.handlers.*;
 import qvc.handlers.factory.DefaultCommandHandlerFactory;
@@ -45,6 +47,8 @@ public class Endpoint {
 			}else{
 				return new CommandResult(validationResult);
 			}
+		} catch(InvocationTargetException e){
+			return new CommandResult(e.getCause());
 		} catch (Throwable e) {
 			return new CommandResult(e);
 		}
@@ -58,6 +62,8 @@ public class Endpoint {
 			}else{
 				return new QueryResult(validationResult);
 			}
+		} catch(InvocationTargetException e){
+			return new QueryResult(e.getCause());
 		} catch (Throwable e) {
 			return new QueryResult(e);
 		}
