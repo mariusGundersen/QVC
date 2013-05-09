@@ -1,8 +1,6 @@
 package qvc;
 
 import qvc.exceptions.DuplicateExecutableException;
-import qvc.handlers.CommandHandler;
-import qvc.handlers.QueryHandler;
 import qvc.handlers.factory.HandlerFactory;
 import qvc.repository.TypeRepository;
 
@@ -34,11 +32,7 @@ public class QVC {
 		loader.loadCommandsAndQueries();
 	}
 	
-	public void setCommandHandleFactory(HandlerFactory<CommandHandler> creater){
-		endpoint.SetCommandHandlerCreater(creater);
-	}
-	
-	public void setQueryHandleFactory(HandlerFactory<QueryHandler> creater){
-		endpoint.SetQueryHandlerCreater(creater);
+	public void setHandleFactory(HandlerFactory factory){
+		endpoint.setHandlerFactory(factory);
 	}
 }

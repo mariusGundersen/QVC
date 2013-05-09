@@ -16,8 +16,8 @@ public class TypeRepository {
 
 	private ExecutableMap<Command> commands = new ExecutableMap<Command>();
 	private ExecutableMap<Query> queries = new ExecutableMap<Query>();
-	private HandlerMap<Command, CommandHandler> commandHandlers = new HandlerMap<Command, CommandHandler>();
-	private HandlerMap<Query, QueryHandler> queryHandlers = new HandlerMap<Query, QueryHandler>();
+	private HandlerMap<Command> commandHandlers = new HandlerMap<Command>();
+	private HandlerMap<Query> queryHandlers = new HandlerMap<Query>();
 	
 	public void addPackage(String packageName){
 		packages.add(new Package(packageName));
@@ -27,8 +27,8 @@ public class TypeRepository {
 		for (Package packageObject : packages) {
 			queries.addClassesInPackage(packageObject, Query.class);
 			commands.addClassesInPackage(packageObject, Command.class);
-			commandHandlers.addClassesInPackage(packageObject, CommandHandler.class, Command.class);
-			queryHandlers.addClassesInPackage(packageObject, QueryHandler.class, Query.class);
+			commandHandlers.addClassesInPackage(packageObject, Command.class);
+			queryHandlers.addClassesInPackage(packageObject, Query.class);
 		}
 	}
 
@@ -52,7 +52,7 @@ public class TypeRepository {
 		}
 	}
 	
-	public Class<? extends CommandHandler> findCommandHandler(Class<? extends Command> command) throws CommandHandlerDoesNotExistException{
+	public Class<? extends Handler> findCommandHandler(Class<? extends Command> command) throws CommandHandlerDoesNotExistException{
 		if (commandHandlers.has(command)) {
 			return commandHandlers.get(command);
 		} else {
@@ -60,7 +60,7 @@ public class TypeRepository {
 		}
 	}
 	
-	public Class<? extends QueryHandler> findQueryHandler(Class<? extends Query> query) throws QueryHandlerDoesNotExistException{
+	public Class<? extends Handler> findQueryHandler(Class<? extends Query> query) throws QueryHandlerDoesNotExistException{
 		if (queryHandlers.has(query)) {
 			return queryHandlers.get(query);
 		} else {

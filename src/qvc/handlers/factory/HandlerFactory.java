@@ -1,7 +1,7 @@
 package qvc.handlers.factory;
 
-import qvc.handlers.ExecutableHandler;
+import qvc.handlers.Handler;
 
-public interface HandlerFactory<T extends ExecutableHandler> {
-	public T create(Class<? extends T> classType, String sessionId) throws Exception;
+public interface HandlerFactory {
+	public Handler create(Class<? extends Handler> classType, String sessionId) throws Exception;
 }

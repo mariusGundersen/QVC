@@ -5,16 +5,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 import qvc.executables.Executable;
-import qvc.handlers.ExecutableHandler;
+import qvc.handlers.Handler;
 
 
-public class HandlerMap<E extends Executable, H extends ExecutableHandler> {	
+public class HandlerMap<E extends Executable> {	
 
 	private static final String HANDLE = "handle";
-	private Map<Class<? extends E>, Class<? extends H>> foundClasses = new HashMap<Class<? extends E>, Class<? extends H>>();
+	private Map<Class<? extends E>, Class<? extends Handler>> foundClasses = new HashMap<Class<? extends E>, Class<? extends Handler>>();
 
-	public void addClassesInPackage(TypeRepository.Package packageObject, Class<? extends H> handlerType, Class<? extends E> executableType) {
-		for (Class<? extends H> handler : packageObject.reflections.getSubTypesOf(handlerType)) {
+	public void addClassesInPackage(TypeRepository.Package packageObject, Class<? extends E> executableType) {
+		for (Class<? extends Handler> handler : packageObject.reflections.getSubTypesOf(Handler.class)) {
 			for(Method method : handler.getMethods()){
 				if(isHandleMethod(method, executableType)){
 					System.out.println("method "+method.getName() + ": " + getKey(method) + " - " + handler);
@@ -28,7 +28,7 @@ public class HandlerMap<E extends Executable, H extends ExecutableHandler> {
 		return foundClasses.containsKey(key);
 	}
 	
-	public Class<? extends H> get(Class<? extends E> key){
+	public Class<? extends Handler> get(Class<? extends E> key){
 		return foundClasses.get(key);
 	}
 	

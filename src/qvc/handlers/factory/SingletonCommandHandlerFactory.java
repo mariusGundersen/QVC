@@ -4,15 +4,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 import qvc.exceptions.CommandHandlerDoesNotExistException;
-import qvc.handlers.CommandHandler;
+import qvc.handlers.Handler;
 
 
-public class SingletonCommandHandlerFactory implements HandlerFactory<CommandHandler>{
+public class SingletonCommandHandlerFactory implements HandlerFactory{
 
-	private final Map<Class<? extends CommandHandler>, CommandHandler> handlerMap = new HashMap<Class<? extends CommandHandler>, CommandHandler>();
+	private final Map<Class<? extends Handler>, Handler> handlerMap = new HashMap<Class<? extends Handler>, Handler>();
 	
 	@Override
-	public CommandHandler create(Class<? extends CommandHandler> classType, String sessionId) throws Exception {
+	public Handler create(Class<? extends Handler> classType, String sessionId) throws Exception {
 		if(handlerMap.containsKey(classType)){
 			return handlerMap.get(classType);
 		}else{
@@ -21,7 +21,7 @@ public class SingletonCommandHandlerFactory implements HandlerFactory<CommandHan
 	}
 	
 	
-	public void addHandler(CommandHandler handler){
+	public void addHandler(Handler handler){
 		handlerMap.put(handler.getClass(), handler);
 	}
 
