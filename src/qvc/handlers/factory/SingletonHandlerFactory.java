@@ -7,7 +7,7 @@ import qvc.exceptions.CommandHandlerDoesNotExistException;
 import qvc.handlers.Handler;
 
 
-public class SingletonCommandHandlerFactory implements HandlerFactory{
+public class SingletonHandlerFactory implements HandlerFactory{
 
 	private final Map<Class<? extends Handler>, Handler> handlerMap = new HashMap<Class<? extends Handler>, Handler>();
 	
