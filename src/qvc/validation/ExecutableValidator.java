@@ -16,10 +16,11 @@ public class ExecutableValidator {
 	
 	
 	private Validator validator;
+	private MessageInterpolator messageInterpolator;
 	
 	public ExecutableValidator() {
 		ValidatorFactory vf = Validation.buildDefaultValidatorFactory();
-		
+		messageInterpolator = vf.getMessageInterpolator();
 		validator = vf.getValidator();
 		
 	}
@@ -37,10 +38,10 @@ public class ExecutableValidator {
 			Parameter constraint = new Parameter(name);
 			
 			
-			for(ConstraintDescriptor<?> constraintDescriptor : propertyDescriptor.getConstraintDescriptors()){
+			for(final ConstraintDescriptor<?> constraintDescriptor : propertyDescriptor.getConstraintDescriptors()){
 				String ruleName = constraintDescriptor.getAnnotation().annotationType().getSimpleName();
 				Map<String, Object> attributes = constraintDescriptor.getAttributes();
-				
+				attributes.put("message", messageInterpolator.interpolate((String) attributes.get("message"), new MetaDataContext(constraintDescriptor)));
 				ParameterContsraint rule = new ParameterContsraint(ruleName, attributes);
 				
 				constraint.addRule(rule);
